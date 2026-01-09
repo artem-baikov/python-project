@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/fontello.css' %}">
+  <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+{% block navbar %}
+  <ul class="nav nav-pills sticky-top bg-white nav-fill">
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'main-page' %}">
+        <span style="font-weight: bold;">Главная</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'top-sellers' %}">
+	    <span style="font-weight: bold;">Топ продавцов</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'advertisement-post' %}">
+        <span style="font-weight: bold;">Разместить объявление</span>
+      </a>
+    </li>
+    {% if not user.is_authenticated %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'register' %}">
+        <span style="font-weight: bold;">Регистрация</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'login' %}">
+        <span style="font-weight: bold;">Войти</span>
+      </a>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'profile' %}">
+        <span style="font-weight: bold;">Профиль</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'logout' %}">
+        <span style="font-weight: bold;">Выйти</span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+  <script>
+  /* Цикл по всем дочерним элементам навигационной панели */
+  for (let elem of document.getElementsByClassName("nav nav-pills sticky-top bg-white nav-fill")[0].children) {
+      let child = elem.firstElementChild; //Определяем переменную с ссылкой (тег `a`)
+      if(child.href == window.location.href) { //И если ссылка равна адресу страницы...
+		child.setAttribute('class', "nav-link active"); //...меняем класс!
+		child.setAttribute('aria-current', "page");
+  		break; //Также можно (нужно?) завершить цикл
+      }
+  }
+  this.parentElement.removeChild(this); //И удалить этот элемент (тег `script`)
+  </script>
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+{% endblock %}
+</body>
+
+</html>
